@@ -3,7 +3,7 @@
 ## Tactics and Techniques
 
 - Privilege Escalation
-  - T1037 - Boot or Logon Initialization Scripts
+  - [T1037 - Boot or Logon Initialization Scripts](https://attack.mitre.org/techniques/T1037/)
 
 ## Azure Threat Research Matrix
 
