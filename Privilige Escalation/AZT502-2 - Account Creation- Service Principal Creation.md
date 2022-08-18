@@ -19,5 +19,11 @@ Enable the Azure Active Directory connector in Microsoft Sentinel
 
 ```Kusto
 AuditLogs
+| where ActivityDisplayName == "Add service principal"
+| extend InitiatedByipAddress = tostring(parse_json(tostring(InitiatedBy.user)).ipAddress)
+| extend InitiatedByUser = tostring(parse_json(tostring(InitiatedBy.user)).userPrincipalName)
+| extend ServicePrincipalName = tostring(TargetResources[0].displayName)
+| extend ApplicationId = tostring(TargetResources[0].id)
+| project TimeGenerated,InitiatedByUser,InitiatedByipAddress,ServicePrincipalName, ApplicationId,Result, OperationName
 
 ```
