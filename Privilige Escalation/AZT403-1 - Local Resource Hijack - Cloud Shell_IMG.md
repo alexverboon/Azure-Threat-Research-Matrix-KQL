@@ -28,3 +28,7 @@ StorageFileLogs
 | extend IPAddress = CallerIpAddress
 | where FileExtension contains "img" and Path contains "cloudconsole"
 ```
+
+
+
+
