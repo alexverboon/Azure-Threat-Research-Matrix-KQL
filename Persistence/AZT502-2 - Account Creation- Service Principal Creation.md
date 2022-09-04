@@ -36,14 +36,15 @@ let AzureADIdentityInfo = IdentityInfo
 | distinct AccountObjectId, AccountDisplayName
 | project AccountObjectId, AccountDisplayName;
 AuditLogs
-| where TimeGenerated > ago(1d)
+| where TimeGenerated > ago(14d)
 | where OperationName == "Add owner to application" or OperationName == "Add owner to service principal"
 | extend InitiatedByipAddress = tostring(parse_json(tostring(InitiatedBy.user)).ipAddress)
 | extend InitiatedByUser = tostring(parse_json(tostring(InitiatedBy.user)).userPrincipalName)
 | extend OwnerId = tostring(TargetResources[0].id)
+| extend App = tostring(parse_json(tostring(parse_json(tostring(TargetResources[0].modifiedProperties))[1].newValue)))
 | join kind=leftouter AzureADIdentityInfo
 on $left. OwnerId == $right.AccountObjectId
-| project TimeGenerated,InitiatedByUser,InitiatedByipAddress,OwnerId,AccountObjectId, AccountDisplayName, Result, OperationName
+| project TimeGenerated,App,InitiatedByUser,InitiatedByipAddress,OwnerId,AccountObjectId, AccountDisplayName, Result, OperationName
 ```
 
 ## Service Principal Creation
